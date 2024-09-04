@@ -19,9 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{F302E229-018F-41B6-AE35-2FC561E02B7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "BookingService\Core\Domain\Domain\Domain.csproj", "{9EF840A3-CDCE-4D66-AB14-79751686E8B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "BookingService\Core\Domain\Domain.csproj", "{9EF840A3-CDCE-4D66-AB14-79751686E8B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "BookingService\Core\Application\Application\Application.csproj", "{E3915A04-E83A-4167-AAEE-B640A5EA3DD1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "BookingService\Core\Application\Application.csproj", "{E3915A04-E83A-4167-AAEE-B640A5EA3DD1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "BookingService\Consumers\API\API.csproj", "{1FD6DE8B-94E9-4EDB-A348-8DE3F3B3CCBD}"
 EndProject

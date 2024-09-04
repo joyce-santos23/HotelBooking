@@ -6,4 +6,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Booking\Exceptions\" />
+    <Folder Include="Guest\Exceptions\" />
+    <Folder Include="Payment\Exceptions\" />
+    <Folder Include="Room\Exceptions\" />
+  </ItemGroup>
+
 </Project>
