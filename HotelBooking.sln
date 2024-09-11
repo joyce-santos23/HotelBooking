@@ -43,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptersTests", "BookingSer
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationTests", "BookingService\Tests\ApplicationTests\ApplicationTests.csproj", "{794E7679-1414-4A93-9046-8D50F6BE04FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "BookingService\Tests\Domain\Domain.csproj", "{21ED1B6B-CBB2-48C0-B6A1-E0CAF0F6D40C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "BookingService\Tests\Domain\DomainTests\DomainTests.csproj", "{21ED1B6B-CBB2-48C0-B6A1-E0CAF0F6D40C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
