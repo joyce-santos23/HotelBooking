@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Booking\" />
     <Folder Include="Guest\" />
-    <Folder Include="Room\" />
   </ItemGroup>
 
   <ItemGroup>
