@@ -1,6 +1,9 @@
-﻿namespace Application.Responses
+﻿using Application.Dtos;
+
+namespace Application.Responses
 {
-    public class GuestResponse
+    public class GuestResponse : Response
     {
+        public GuestDto Data;
     }
 }
