@@ -37,6 +37,25 @@ namespace API.Controllers
             {
                 return BadRequest(res);
             }
+            else if (res.ErrorCode == Application.ErrorCode.INVALID_PERSON_ID)
+            {
+                return BadRequest(res);
+            }
+            else if (res.ErrorCode == Application.ErrorCode.MISSING_REQUIRED_INFORMATION)
+            {
+                return BadRequest(res);
+            }
+            else if (res.ErrorCode == Application.ErrorCode.INVALID_EMAIL)
+            {
+                return BadRequest(res);
+            }
+            else if (res.ErrorCode == Application.ErrorCode.COULD_NOT_STORE_DATA)
+            {
+                return BadRequest(res);
+            }
+
+
+
 
             _logger.LogError("Response with unkwn ErrorCode Returned", res);
             return BadRequest();

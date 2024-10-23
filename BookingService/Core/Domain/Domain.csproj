@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Booking\Exceptions\" />
-    <Folder Include="Guest\Exceptions\" />
     <Folder Include="Payment\Exceptions\" />
     <Folder Include="Room\Exceptions\" />
   </ItemGroup>
@@ -18,6 +17,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>

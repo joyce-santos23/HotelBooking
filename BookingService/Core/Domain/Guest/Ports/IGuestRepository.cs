@@ -4,8 +4,8 @@ namespace Domain.Ports
 {
     public interface IGuestRepository
     {
-        Task<Guest> Get(int Id);
-        Task<int> Create(Guest guest);
+        Task<Domain.Entities.Guest> Get(int Id);
+        Task<int> Create(Domain.Entities.Guest guest);
 
     }
 }

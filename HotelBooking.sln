@@ -43,7 +43,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptersTests", "BookingSer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationTests", "BookingService\Tests\ApplicationTests\ApplicationTests.csproj", "{794E7679-1414-4A93-9046-8D50F6BE04FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainTests", "BookingService\Tests\Domain\DomainTests\DomainTests.csproj", "{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainTests", "BookingService\Tests\Domain\DomainTests\DomainTests.csproj", "{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "BookingService\Core\Shared\Shared.csproj", "{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{1A48A9A0-48FD-4FD5-89D8-64D6629F03B8} = {B8400F3B-38C9-4F72-A9BD-3603F3950D0E}
 		{794E7679-1414-4A93-9046-8D50F6BE04FC} = {BF01DC48-ADA3-4039-ACEA-25C3926656D9}
 		{294FA24E-BABE-4F70-BF2C-BECB8D71C5CD} = {43AEEF16-BA95-4271-8C67-359CD6B29A8A}
+		{CA8AF7F8-8A52-4BD2-AB7F-6AED23894D4F} = {9AD0D1EA-DA82-4B1F-A352-5E54B99C6A85}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1B65E77-864B-45EA-92D7-5EEB658A46AF}

@@ -8,7 +8,7 @@ namespace Application.Dtos
     public class GuestDto
     {
         public int Id { get; set; }
-        public string Nome { get; set; }
+        public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
         public int IdNumber { get; set; }
@@ -19,12 +19,12 @@ namespace Application.Dtos
             return new Domain.Entities.Guest
             {
                 Id = guestDto.Id,
-                Nome = guestDto.Nome,
+                Name = guestDto.Name,
                 Surname = guestDto.Surname,
                 Email = guestDto.Email,
                 DocumentId = new PersonId
                 {
-                    IdNumber = guestDto.IdNumber,
+                    IdNumber = guestDto.IdNumber.ToString(),
                     DocumentType = (DocumentType)guestDto.IdTypeCode
                 }
             };
