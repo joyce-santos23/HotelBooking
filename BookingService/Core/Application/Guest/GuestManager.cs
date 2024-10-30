@@ -69,14 +69,25 @@ namespace Application.Guest
             }
         }
 
-        public Task<GuestResponse> CreateGuest()
+        public async Task<GuestResponse> GetGuest(int guestId)
         {
-            throw new NotImplementedException();
-        }
+            var guest = await _guestRepository.Get(guestId);
 
-        public Task<GuestResponse> GetGuest(int guestId)
-        {
-            throw new NotImplementedException();
+            if (guest == null)
+            {
+                return new GuestResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.GUEST_NOT_FOUND,
+                    Message = "No guest record was found with the given id"
+                };
+            }
+
+            return new GuestResponse
+            {
+                Data = GuestDto.MapToDto(guest),
+                Success = true,
+            };
         }
     }
 }

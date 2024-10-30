@@ -1,6 +1,6 @@
 namespace ApplicationTests
 {
-    public class Tests
+    public class GuestManagerTests
     {
         [Fact]
         public void Test1()

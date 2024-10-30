@@ -11,7 +11,7 @@ namespace Application.Dtos
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public int IdNumber { get; set; }
+        public string IdNumber { get; set; }
         public int IdTypeCode { get; set; }
 
         public static Domain.Entities.Guest MapToEntity(GuestDto guestDto)
@@ -29,6 +29,19 @@ namespace Application.Dtos
                 }
             };
 
+        }
+
+        public static GuestDto MapToDto(Domain.Entities.Guest guest)
+        {
+            return new GuestDto
+            {
+                Id = guest.Id,
+                Name = guest.Name,
+                Surname = guest.Surname,
+                Email = guest.Email,
+                IdNumber = guest.DocumentId.IdNumber,
+                IdTypeCode = (int)guest.DocumentId.DocumentType
+            };
         }
         
     }

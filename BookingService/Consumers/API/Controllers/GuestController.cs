@@ -60,8 +60,16 @@ namespace API.Controllers
             _logger.LogError("Response with unkwn ErrorCode Returned", res);
             return BadRequest();
 
+        }
 
+        [HttpGet]
+        public async Task<ActionResult<GuestDto>> Get(int guestId)
+        {
+            var res = await _guestManager.GetGuest(guestId);
 
+            if (res.Success) return Created("", res.Data);
+
+            return NotFound(res);
         }
     }
 }
