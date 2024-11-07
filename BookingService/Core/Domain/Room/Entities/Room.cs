@@ -11,21 +11,14 @@ namespace Domain.Entities
 
         public Price Price { get; set; }
 
-        public bool IsAvailable { 
-            get{
-                if(this.InMaintenance || HasGuest)
-                {
-                    return false;
-                }
-                return true;
+        public bool IsAvailable
+        {
+            get
+            {
+                return !InMaintenance;
             }
-            
         }
 
-        public bool HasGuest { 
-            get{
-                return true;
-             }
-        }
+
     }
 }

@@ -15,6 +15,8 @@ namespace Domain.Entities
         public DateTime PlacedAt { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public int RoomId { get; set; }  
+        public int GuestId { get; set; }
         public Room Room { get; set; }
 
         public Guest Guest { get; set; }
@@ -39,5 +41,9 @@ namespace Domain.Entities
                 
             };
         }
+
+
+
+        
     }
 }

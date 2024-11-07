@@ -1,6 +1,9 @@
-﻿namespace Application.Room.Responses
+﻿using Application.Dtos;
+
+namespace Application.Room.Responses
 {
-    public class RoomResponse
+    public class RoomResponse : Response
     {
+        public RoomDto RoomData;
     }
 }

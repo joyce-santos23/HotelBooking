@@ -1,17 +1,18 @@
 ﻿using Application.Dtos;
 using Application.Guest.Requests;
 using Application.Ports;
+using Application.Responses;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("guests")]
     public class GuestController : ControllerBase
     {
         private readonly ILogger<GuestController> _logger;
         private readonly IGuestManager _guestManager;
-        
+
 
         public GuestController(
             ILogger<GuestController> logger,
@@ -24,12 +25,12 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<GuestDto>> Post(GuestDto guest)
         {
-            var resquest = new CreateGuestRequest
+            var request = new CreateGuestRequest
             {
                 Data = guest,
             };
 
-            var res = await _guestManager.CreateGuest(resquest);
+            var res = await _guestManager.CreateGuest(request);
 
             if (res.Success) return Created("", res.Data);
 
@@ -54,22 +55,53 @@ namespace API.Controllers
                 return BadRequest(res);
             }
 
-
-
-
-            _logger.LogError("Response with unkwn ErrorCode Returned", res);
+            _logger.LogError("Response with unknown ErrorCode returned", res);
             return BadRequest();
-
         }
 
-        [HttpGet]
+        [HttpGet("{guestId}")]
         public async Task<ActionResult<GuestDto>> Get(int guestId)
         {
             var res = await _guestManager.GetGuest(guestId);
 
-            if (res.Success) return Created("", res.Data);
+            if (res.Success) return Ok(res.Data); 
 
             return NotFound(res);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<GuestDto>>> GetAll()
+        {
+            var guests = await _guestManager.GetAllGuests();
+
+            if (!guests.Any())
+            {
+                return NotFound(new GuestResponse
+                {
+                    Success = false,
+                    ErrorCode = Application.ErrorCode.NOT_FOUND,
+                    Message = "No guest records were found"
+                });
+            }
+
+            var guestDtos = guests.Select(g => g.Data).ToList();
+            return Ok(guestDtos);
+        }
+
+
+        [HttpDelete("{guestId}")]
+        public async Task<IActionResult> Delete(int guestId)
+        {
+            var success = await _guestManager.DeleteGuest(guestId);
+
+            if (success) return NoContent();
+
+            return NotFound(new GuestResponse
+            {
+                Success = false,
+                ErrorCode = Application.ErrorCode.NOT_FOUND,
+                Message = "No guest record was found with the given id"
+            });
         }
     }
 }

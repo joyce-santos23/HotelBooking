@@ -1,6 +1,16 @@
-﻿namespace Application.Ports
+﻿using Application.Dtos;
+using Application.Booking.Requests;
+using Application.Responses;
+using Application.Guest.Requests;
+using Application.Room.Responses;
+
+namespace Application.Ports
 {
-    internal interface IBookingManager
+    public interface IBookingManager
     {
+        Task<BookingResponse> CreateBooking(CreateBookingRequest request);
+        Task<BookingResponse> GetBooking(int bookingId);
+        Task<IEnumerable<BookingResponse>> GetAllBookings();
+        Task<bool> DeleteBooking(int guestId);
     }
 }

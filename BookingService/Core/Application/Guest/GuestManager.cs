@@ -21,7 +21,6 @@ namespace Application.Guest
             {
                 var guest = GuestDto.MapToEntity(request.Data);
 
-                //request.Data.Id = await _guestRepository.Create(guest);
                 await guest.Save(_guestRepository);
                 request.Data.Id = guest.Id;
 
@@ -89,5 +88,42 @@ namespace Application.Guest
                 Success = true,
             };
         }
+
+        public async Task<IEnumerable<GuestResponse>> GetAllGuests()
+        {
+            var guests = await _guestRepository.GetAll();
+            var responseList = new List<GuestResponse>();
+
+            foreach (var guest in guests)
+            {
+                responseList.Add(new GuestResponse
+                {
+                    Data = GuestDto.MapToDto(guest),
+                    Success = true
+                });
+            }
+
+            return responseList;
+        }
+
+        public async Task<bool> DeleteGuest(int guestId)
+        {
+            try
+            {
+                var guest = await _guestRepository.Get(guestId);
+                if (guest == null)
+                {
+                    return false;
+                }
+
+                await _guestRepository.Delete(guestId);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false; 
+            }
+        }
+
     }
 }
