@@ -11,8 +11,9 @@ namespace Data.Booking
             builder.HasKey(b => b.Id);
 
             builder.HasOne(b => b.Room)
-                   .WithMany()
-                   .HasForeignKey(b => b.RoomId);
+                    .WithMany(r => r.Bookings) 
+                    .HasForeignKey(b => b.RoomId)
+                    .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(b => b.Guest)
                    .WithMany()

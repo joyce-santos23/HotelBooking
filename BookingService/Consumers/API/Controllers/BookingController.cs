@@ -34,9 +34,19 @@ namespace API.Controllers
             if (res.Success)
                 return CreatedAtAction(nameof(Get), new { id = res.BookingData.Id }, res.BookingData);
 
-            _logger.LogError("Response with unknown error code", res);
-            return BadRequest("An error occurred while creating the booking.");
+            _logger.LogError("Failed to create booking: {ErrorCode} - {Message}", res.ErrorCode, res.Message);
+
+            return res.ErrorCode switch
+            {
+                Application.ErrorCode.ROOM_NOT_FOUND => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.GUEST_NOT_FOUND => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.COULD_NOT_STORE_DATA => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.ROOM_IN_MAINTENANCE => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),  // Adicionando tratamento para ROOM_IN_MAINTENANCE
+                Application.ErrorCode.ROOM_NOT_AVAILABLE => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),  // Adicionando tratamento para ROOM_NOT_AVAILABLE
+                _ => BadRequest(new { Message = "An error occurred while creating the booking." })
+            };
         }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<BookingDto>> Get(int id)

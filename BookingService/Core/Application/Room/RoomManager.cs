@@ -4,6 +4,7 @@ using Application.Room.Requests;
 using Application.Room.Responses;
 using Domain.Entities;
 using Domain.Ports;
+using Domain.Room.Exceptions;
 
 namespace Application.Room
 {
@@ -20,7 +21,8 @@ namespace Application.Room
             try
             {
                 var room = RoomDto.MapToEntity(request.RoomData);
-                request.RoomData.Id = await _roomRepository.Create(room);
+                await room.Save(_roomRepository);
+                request.RoomData.Id = room.Id;
 
                 return new RoomResponse
                 {
@@ -29,12 +31,49 @@ namespace Application.Room
                     Message = "Sala criada com sucesso!"
                 };
             }
-            catch (Exception ex)
+            catch (InvalidRoomNameException)
             {
                 return new RoomResponse
                 {
                     Success = false,
-                    Message = "Erro ao criar sala: " + ex.Message
+                    ErrorCode = ErrorCode.MISSING_REQUIRED_INFORMATION,
+                    Message = "Missing passed name information"
+                };
+            }
+            catch (InvalidRoomPriceException)
+            {
+                return new RoomResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.INVALID_PRICE,
+                    Message = "The passed price cannot be <= 0"
+                };
+            }
+            catch (InvalidRoomLevelException)
+            {
+                return new RoomResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.MISSING_REQUIRED_INFORMATION,
+                    Message = "Missing passed level information"
+                };
+            }
+            catch (RoomNotAvailableException)
+            {
+                return new RoomResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.ROOM_NOT_AVAILABLE,
+                    Message = "The passed Room is not available"
+                };
+            }
+            catch (Exception)
+            {
+                return new RoomResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.COULD_NOT_STORE_DATA,
+                    Message = "There was an error creating a room"
                 };
             }
         }

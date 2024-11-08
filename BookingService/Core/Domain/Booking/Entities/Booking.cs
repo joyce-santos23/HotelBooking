@@ -1,10 +1,16 @@
-﻿using Domain.Enums;
+﻿using Domain.Booking.Exceptions;
+using Domain.Enums;
+using Domain.Ports;
+using System.Text.Json.Serialization;
 using Action = Domain.Enums.Action;
 
 namespace Domain.Entities
 {
     public class Booking
     {
+        private DateTime _start;
+        private DateTime _end;
+
         public Booking()
         {
             Status = Status.Created;
@@ -13,8 +19,22 @@ namespace Domain.Entities
 
         public int Id { get; set; }
         public DateTime PlacedAt { get; set; }
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
+        public DateTime Start
+        {
+            get => _start;
+            set => _start = value.Date;
+        }
+
+        public DateTime End
+        {
+            get => _end;
+            set => _end = value.Date; 
+        }
+        [JsonIgnore] 
+        public DateTime StartDateOnly => Start.Date;
+
+        [JsonIgnore] 
+        public DateTime EndDateOnly => End.Date;
         public int RoomId { get; set; }  
         public int GuestId { get; set; }
         public Room Room { get; set; }
@@ -42,8 +62,38 @@ namespace Domain.Entities
             };
         }
 
+        public void Validate()
+        {
+
+            if (Start >= End)
+                throw new InvalidBookingDatesException();
+
+            if (Start < PlacedAt)
+                throw new InvalidBookingDatesException();
+
+            if (RoomId <= 0)
+                throw new RoomNotFoundException();
+
+            if (GuestId <= 0)
+                throw new GuestNotFoundException();
+        }
+
+        public async Task Save(IBookingRepository bookingRepository)
+        {
+            this.Validate();
+
+            if (this.Id == 0)
+            {
+                this.Id = await bookingRepository.Create(this);
+            }
+            else
+            {
+                //await
+            }
+        }
 
 
-        
+
+
     }
 }

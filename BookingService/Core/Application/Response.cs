@@ -11,6 +11,11 @@
         GUEST_NOT_FOUND = 6,
 
         //Room
+        ROOM_NOT_FOUND = 7,
+        INVALID_PRICE = 8,
+        ROOM_IN_MAINTENANCE = 9,
+        ROOM_NOT_AVAILABLE
+
 
         //Booking
 

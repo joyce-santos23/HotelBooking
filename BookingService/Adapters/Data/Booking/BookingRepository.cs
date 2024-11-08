@@ -47,6 +47,27 @@ namespace Data.Booking
             return true;
         }
 
+        public async Task<bool> RoomExists(int roomId)
+        {
+            return await _hotelDbContext.Rooms.AnyAsync(r => r.Id == roomId);
+        }
+
+        public async Task<bool> GuestExists(int guestId)
+        {
+            return await _hotelDbContext.Guests.AnyAsync(g => g.Id == guestId);
+        }
+
+        public async Task<Domain.Entities.Booking> GetBookingByRoomAndDateRange(int roomId, DateTime startDate, DateTime endDate)
+        {
+            // Ajusta as datas para garantir que estamos trabalhando apenas com a parte da data (sem hora)
+            var startDateOnly = startDate.Date;
+            var endDateOnly = endDate.Date;
+
+            return await _hotelDbContext.Bokings
+                .FirstOrDefaultAsync(b => b.RoomId == roomId &&
+                                          b.Start.Date < endDateOnly &&  // Compara apenas as datas, sem hora
+                                          b.End.Date > startDateOnly);   // Compara apenas as datas, sem hora
+        }
 
     }
 }
