@@ -12,10 +12,12 @@ namespace Application.Guest
     public class GuestManager : IGuestManager
     {
         private IGuestRepository _guestRepository;
+        private IBookingRepository _bookingRepository;
 
-        public GuestManager(IGuestRepository guestRepository)
+        public GuestManager(IGuestRepository guestRepository, IBookingRepository bookingRepository)
         {
             _guestRepository = guestRepository;
+            _bookingRepository = bookingRepository;
         }
         public async Task<GuestResponse> CreateGuest(CreateGuestRequest request)
         {
@@ -123,6 +125,17 @@ namespace Application.Guest
                     };
                 }
 
+                bool hasBookings = await _bookingRepository.HasBookingsForGuest(guestId);
+                if (hasBookings)
+                {
+                    return new GuestResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCode.CANNOT_DELETE_GUEST_WITH_BOOKINGS,
+                        Message = "Cannot delete guest because they have existing bookings."
+                    };
+                }
+
                 await _guestRepository.Delete(guestId);
                 return new GuestResponse
                 {
@@ -140,6 +153,7 @@ namespace Application.Guest
                 };
             }
         }
+
 
     }
 

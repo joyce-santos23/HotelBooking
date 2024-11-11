@@ -68,5 +68,11 @@ namespace Data.Booking
                                           b.End.Date > startDateOnly);  
         }
 
+        public async Task<bool> HasBookingsForGuest(int guestId)
+        {
+            return await _hotelDbContext.Bokings.AnyAsync(b => b.GuestId == guestId);
+        }
+
+
     }
 }

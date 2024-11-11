@@ -9,5 +9,6 @@
         Task<bool> RoomExists(int roomId);  
         Task<bool> GuestExists(int guestId);
         Task<Domain.Entities.Booking> GetBookingByRoomAndDateRange(int roomId, DateTime startDate, DateTime endDate);
+        Task<bool> HasBookingsForGuest(int guestId);
     }
 }

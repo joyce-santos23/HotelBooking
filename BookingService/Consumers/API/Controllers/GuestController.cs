@@ -94,14 +94,15 @@ namespace API.Controllers
 
             if (res.Success) return NoContent();
 
-            return NotFound(new GuestResponse
+            return res.ErrorCode switch
             {
-                Success = false,
-                ErrorCode = Application.ErrorCode.NOT_FOUND,
-                Message = "No guest record was found with the given id"
-            });
+                Application.ErrorCode.NOT_FOUND => NotFound(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.CANNOT_DELETE_GUEST_WITH_BOOKINGS => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                _ => BadRequest(new { Message = "An error occurred while deleting the guest.", ErrorCode = res.ErrorCode })
+            };
         }
 
-     
+
+
     }
 }
