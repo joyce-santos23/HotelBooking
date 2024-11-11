@@ -10,5 +10,6 @@ namespace Application.Ports
         Task<RoomResponse> GetRoom(int roomId);
         Task<RoomResponse> DeleteRoom(int roomId);
         Task<IEnumerable<RoomResponse>> GetAllRooms();
+        Task<RoomResponse> UpdateRoom(int roomId, UpdateRoomRequest request);
     }
 }

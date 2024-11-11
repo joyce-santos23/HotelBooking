@@ -84,17 +84,52 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var success = await _roomManager.DeleteRoom(id);
+            var response = await _roomManager.DeleteRoom(id);
 
-            return NotFound(new RoomResponse
+            if (response.Success)
             {
-                Success = false,
-                ErrorCode = Application.ErrorCode.NOT_FOUND,
-                Message = "No guest record was found with the given id"
-            });
+                return NoContent();
+            }
 
-            
+            _logger.LogError("Failed to delete room: {ErrorCode} - {Message}", response.ErrorCode, response.Message);
+
+            return response.ErrorCode switch
+            {
+                Application.ErrorCode.NOT_FOUND => NotFound(new { Message = response.Message, ErrorCode = response.ErrorCode }),
+                Application.ErrorCode.CANNOT_DELETE_ROOM_WITH_BOOKINGS => BadRequest(new { Message = response.Message, ErrorCode = response.ErrorCode }),
+                _ => BadRequest(new { Message = "An error occurred while deleting the room." })
+            };
         }
+
+
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, RoomDto room)
+        {
+            var request = new UpdateRoomRequest
+            {
+                RoomData = room
+            };
+
+            var res = await _roomManager.UpdateRoom(id, request);
+
+            if (res.Success)
+            {
+                return Ok(res.RoomData);
+            }
+
+            _logger.LogError("Failed to update room: {ErrorCode} - {Message}", res.ErrorCode, res.Message);
+
+            return res.ErrorCode switch
+            {
+                Application.ErrorCode.NOT_FOUND => NotFound(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.MISSING_REQUIRED_INFORMATION => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                Application.ErrorCode.INVALID_PRICE => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
+                _ => BadRequest(new { Message = "An error occurred while updating the room." })
+            };
+        }
+
 
 
 

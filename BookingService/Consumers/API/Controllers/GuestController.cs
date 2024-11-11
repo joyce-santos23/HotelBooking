@@ -13,7 +13,6 @@ namespace API.Controllers
         private readonly ILogger<GuestController> _logger;
         private readonly IGuestManager _guestManager;
 
-
         public GuestController(
             ILogger<GuestController> logger,
             IGuestManager guestManager)
@@ -64,7 +63,7 @@ namespace API.Controllers
         {
             var res = await _guestManager.GetGuest(guestId);
 
-            if (res.Success) return Ok(res.Data); 
+            if (res.Success) return Ok(res.Data);
 
             return NotFound(res);
         }
@@ -88,13 +87,12 @@ namespace API.Controllers
             return Ok(guestDtos);
         }
 
-
         [HttpDelete("{guestId}")]
         public async Task<IActionResult> Delete(int guestId)
         {
-            var success = await _guestManager.DeleteGuest(guestId);
+            var res = await _guestManager.DeleteGuest(guestId);
 
-            if (success) return NoContent();
+            if (res.Success) return NoContent();
 
             return NotFound(new GuestResponse
             {
@@ -103,5 +101,7 @@ namespace API.Controllers
                 Message = "No guest record was found with the given id"
             });
         }
+
+     
     }
 }

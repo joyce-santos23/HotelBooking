@@ -6,5 +6,6 @@
         Task<int> Create(Domain.Entities.Room room);
         Task<IEnumerable<Domain.Entities.Room>> GetAll();
         Task<bool> Delete(int Id);
+        Task Update(Domain.Entities.Room room);
     }
 }

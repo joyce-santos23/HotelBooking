@@ -32,6 +32,7 @@ namespace Data.Room
         public async Task<Domain.Entities.Room> Get(int Id)
         {
             return await _hotelDbContext.Rooms
+                .Include(r => r.Bookings) 
                 .Where(r => r.Id == Id)
                 .FirstOrDefaultAsync();
         }
@@ -41,6 +42,12 @@ namespace Data.Room
             return await _hotelDbContext.Rooms.ToListAsync(); 
         }
 
-       
+        public async Task Update(Domain.Entities.Room room)
+        {
+            _hotelDbContext.Rooms.Update(room);
+            await _hotelDbContext.SaveChangesAsync();
+        }
+
+
     }
 }

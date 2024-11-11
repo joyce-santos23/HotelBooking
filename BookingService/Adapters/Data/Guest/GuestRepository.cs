@@ -24,17 +24,6 @@ namespace Data.Guest
             return _hotelDbContext.Guests.Where(g => g.Id == Id).FirstOrDefaultAsync();
         }
 
-        public async Task<bool> Update(Domain.Entities.Guest guest)
-        {
-            var existingGuest = await _hotelDbContext.Guests.FindAsync(guest.Id);
-            if (existingGuest == null)
-                return false;
-
-            _hotelDbContext.Entry(existingGuest).CurrentValues.SetValues(guest);
-            await _hotelDbContext.SaveChangesAsync();
-            return true;
-        }
-
         public async Task<bool> Delete(int id)
         {
             var guest = await _hotelDbContext.Guests.FindAsync(id);

@@ -2,8 +2,10 @@
 using Application.Guest.Requests;
 using Application.Ports;
 using Application.Responses;
+using Domain.Enums;
 using Domain.Guest.Exceptions;
 using Domain.Ports;
+using Domain.ValueObjects;
 
 namespace Application.Guest
 {
@@ -106,24 +108,40 @@ namespace Application.Guest
             return responseList;
         }
 
-        public async Task<bool> DeleteGuest(int guestId)
+        public async Task<GuestResponse> DeleteGuest(int guestId)
         {
             try
             {
                 var guest = await _guestRepository.Get(guestId);
                 if (guest == null)
                 {
-                    return false;
+                    return new GuestResponse
+                    {
+                        Success = false,
+                        ErrorCode = ErrorCode.GUEST_NOT_FOUND,
+                        Message = "No guest record was found with the given id"
+                    };
                 }
 
                 await _guestRepository.Delete(guestId);
-                return true;
+                return new GuestResponse
+                {
+                    Success = true,
+                    Message = "Guest deleted successfully"
+                };
             }
             catch (Exception)
             {
-                return false; 
+                return new GuestResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.COULD_NOT_DELETE,
+                    Message = "There was an error when deleting the guest record"
+                };
             }
         }
 
     }
+
 }
+

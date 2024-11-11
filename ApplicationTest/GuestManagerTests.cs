@@ -229,5 +229,47 @@ namespace ApplicationTest
 
         }
 
+       
+
+
+
+        [Test]
+        public async Task Should_DeleteGuest_Successfully()
+        {
+            int guestId = 1;
+            var fakeRepo = new Mock<IGuestRepository>();
+
+            fakeRepo.Setup(x => x.Get(guestId)).ReturnsAsync(new Guest { Id = guestId, Name = "John Doe" });
+
+            fakeRepo.Setup(x => x.Delete(guestId)).ReturnsAsync(true);
+
+            guestManager = new GuestManager(fakeRepo.Object);
+
+            var res = await guestManager.DeleteGuest(guestId);
+
+            Assert.IsNotNull(res);
+            Assert.True(res.Success); 
+            Assert.AreEqual("Guest deleted successfully", res.Message);
+        }
+
+
+        [Test]
+        public async Task Should_Return_Failure_When_Guest_Not_Found_For_Delete()
+        {
+            int guestId = 999;
+            var fakeRepo = new Mock<IGuestRepository>();
+
+            fakeRepo.Setup(x => x.Delete(guestId)).ReturnsAsync(false);
+
+            guestManager = new GuestManager(fakeRepo.Object);
+
+            var res = await guestManager.DeleteGuest(guestId);
+
+            Assert.IsNotNull(res);
+            Assert.False(res.Success);
+            Assert.AreEqual("No guest record was found with the given id", res.Message);
+        }
+
+
     }
 }

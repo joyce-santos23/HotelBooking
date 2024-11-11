@@ -9,12 +9,14 @@
         MISSING_REQUIRED_INFORMATION = 4,
         INVALID_EMAIL = 5,
         GUEST_NOT_FOUND = 6,
+        COULD_NOT_DELETE = 7,
 
         //Room
-        ROOM_NOT_FOUND = 7,
-        INVALID_PRICE = 8,
-        ROOM_IN_MAINTENANCE = 9,
-        ROOM_NOT_AVAILABLE
+        ROOM_NOT_FOUND = 8,
+        INVALID_PRICE = 9,
+        ROOM_IN_MAINTENANCE = 10,
+        ROOM_NOT_AVAILABLE = 11,
+        CANNOT_DELETE_ROOM_WITH_BOOKINGS
 
 
         //Booking
