@@ -1,8 +1,5 @@
-﻿using Application.Dtos;
-using Application.Booking.Requests;
+﻿using Application.Booking.Requests;
 using Application.Responses;
-using Application.Guest.Requests;
-using Application.Room.Responses;
 
 namespace Application.Ports
 {
@@ -12,5 +9,6 @@ namespace Application.Ports
         Task<BookingResponse> GetBooking(int bookingId);
         Task<IEnumerable<BookingResponse>> GetAllBookings();
         Task<bool> DeleteBooking(int guestId);
+        Task<BookingResponse> UpdateBooking(int bookingId, UpdateBookingRequest request);
     }
 }

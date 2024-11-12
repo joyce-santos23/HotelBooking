@@ -5,6 +5,7 @@
         Task<Domain.Entities.Booking> Get(int Id);
         Task<int> Create(Domain.Entities.Booking booking);
         Task<IEnumerable<Domain.Entities.Booking>> GetAll();
+        Task Update (Domain.Entities.Booking booking);
         Task<bool> Delete(int Id);
         Task<bool> RoomExists(int roomId);  
         Task<bool> GuestExists(int guestId);

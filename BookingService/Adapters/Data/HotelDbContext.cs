@@ -1,7 +1,6 @@
 ﻿using Data.Booking;
 using Data.Guest;
 using Data.Room;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data

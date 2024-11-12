@@ -73,6 +73,10 @@ namespace Data.Booking
             return await _hotelDbContext.Bokings.AnyAsync(b => b.GuestId == guestId);
         }
 
-
+        public async Task Update(Domain.Entities.Booking booking)
+        {
+            _hotelDbContext.Bokings.Update(booking);
+            await _hotelDbContext.SaveChangesAsync();
+        }
     }
 }

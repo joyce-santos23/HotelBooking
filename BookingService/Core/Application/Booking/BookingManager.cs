@@ -2,6 +2,7 @@
 using Application.Dtos;
 using Application.Ports;
 using Application.Responses;
+using Application.Room.Responses;
 using Domain.Booking.Exceptions;
 using Domain.Ports;
 using Domain.Room.Exceptions;
@@ -200,5 +201,68 @@ namespace Application.Booking
                 return false;
             }
         }
+
+        public async Task<BookingResponse> UpdateBooking(int bookingId, UpdateBookingRequest request)
+        {
+            var existingBooking = await _bookingRepository.Get(bookingId);
+            if (existingBooking == null)
+            {
+                return new BookingResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.BOOKING_NOT_FOUND,
+                    Message = "Booking not found."
+                };
+            }
+
+            if (request.BookingData.End <= request.BookingData.Start)
+            {
+                return new BookingResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.COULD_NOT_STORE_DATA,
+                    Message = "End date must be after the start date."
+                };
+            }
+
+            var conflictingBooking = await _bookingRepository.GetBookingByRoomAndDateRange(
+                existingBooking.RoomId,
+                request.BookingData.Start,
+                request.BookingData.End);
+
+            if (conflictingBooking != null && conflictingBooking.Id != bookingId)
+            {
+                return new BookingResponse
+                {
+                    Success = false,
+                    ErrorCode = ErrorCode.ROOM_NOT_AVAILABLE,
+                    Message = "The room is already booked for the requested dates."
+                };
+            }
+
+            existingBooking.Start = request.BookingData.Start;
+            existingBooking.End = request.BookingData.End;
+
+            try
+            {
+                await _bookingRepository.Update(existingBooking);
+                return new BookingResponse
+                {
+                    BookingData = BookingDto.MapToDto(existingBooking),
+                    Success = true,
+                    Message = "Booking dates updated successfully."
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BookingResponse
+                {
+                    Success = false,
+                    Message = "Error updating booking dates: " + ex.Message
+                };
+            }
+        }
+
+
     }
 }

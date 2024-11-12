@@ -11,6 +11,7 @@ namespace ApplicationTest
     public class Tests
     {
         GuestManager guestManager;
+
         [SetUp]
         public void Setup()
         {
@@ -27,7 +28,6 @@ namespace ApplicationTest
         {
             var guestDto = new GuestDto
             {
-             
                 Name = "Fulano",
                 Surname = "De tal",
                 Email = "fulano@email.com",
@@ -44,10 +44,9 @@ namespace ApplicationTest
 
             var fakeRepo = new Mock<IGuestRepository>();
 
-            fakeRepo.Setup(x => x.Create(
-                It.IsAny<Guest>())).Returns(Task.FromResult(expectedId));
+            fakeRepo.Setup(x => x.Create(It.IsAny<Guest>())).Returns(Task.FromResult(expectedId));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.CreateGuest(request);
 
@@ -69,7 +68,6 @@ namespace ApplicationTest
         {
             var guestDto = new GuestDto
             {
-
                 Name = "Fulano",
                 Surname = "De tal",
                 Email = "fulano@email.com",
@@ -84,26 +82,22 @@ namespace ApplicationTest
 
             var fakeRepo = new Mock<IGuestRepository>();
 
-            fakeRepo.Setup(x => x.Create(
-                It.IsAny<Guest>())).Returns(Task.FromResult(222));
+            fakeRepo.Setup(x => x.Create(It.IsAny<Guest>())).Returns(Task.FromResult(222));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.CreateGuest(request);
 
             Assert.IsNotNull(res);
             Assert.False(res.Success);
-
             Assert.AreEqual(res.ErrorCode, ErrorCode.INVALID_PERSON_ID);
             Assert.AreEqual(res.Message, "The passed ID is not valid");
-
         }
 
         [TestCase("", "Surname teste", "email@email.com")]
         [TestCase("Name", "", "email@email.com")]
         [TestCase("Name", "Surname teste", "")]
         [TestCase("", "", "")]
-
         public async Task Should_Return_MissingRequiredInformation_WhenDocsAreInvalid(
             string name,
             string surname,
@@ -111,7 +105,6 @@ namespace ApplicationTest
         {
             var guestDto = new GuestDto
             {
-
                 Name = name,
                 Surname = surname,
                 Email = email,
@@ -126,29 +119,24 @@ namespace ApplicationTest
 
             var fakeRepo = new Mock<IGuestRepository>();
 
-            fakeRepo.Setup(x => x.Create(
-                It.IsAny<Guest>())).Returns(Task.FromResult(222));
+            fakeRepo.Setup(x => x.Create(It.IsAny<Guest>())).Returns(Task.FromResult(222));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.CreateGuest(request);
 
             Assert.IsNotNull(res);
             Assert.False(res.Success);
-
             Assert.AreEqual(res.ErrorCode, ErrorCode.MISSING_REQUIRED_INFORMATION);
             Assert.AreEqual(res.Message, "Missing passed required information");
-
         }
 
         [TestCase("emailsemarrobasemponto")]
         [TestCase("b@b.com")]
-
         public async Task Should_Return_InvalidEmailException_WhenDocsAreInvalid(string email)
         {
             var guestDto = new GuestDto
             {
-
                 Name = "Fulano",
                 Surname = "De tal",
                 Email = email,
@@ -163,49 +151,42 @@ namespace ApplicationTest
 
             var fakeRepo = new Mock<IGuestRepository>();
 
-            fakeRepo.Setup(x => x.Create(
-                It.IsAny<Guest>())).Returns(Task.FromResult(222));
+            fakeRepo.Setup(x => x.Create(It.IsAny<Guest>())).Returns(Task.FromResult(222));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.CreateGuest(request);
 
             Assert.IsNotNull(res);
             Assert.False(res.Success);
-
             Assert.AreEqual(res.ErrorCode, ErrorCode.INVALID_EMAIL);
             Assert.AreEqual(res.Message, "The given email is not valid");
-
         }
 
         [Test]
         public async Task Should_Return_GuestNotFound_WhenDocsAreInvalid()
         {
-          
             var fakeRepo = new Mock<IGuestRepository>();
 
             fakeRepo.Setup(x => x.Get(333)).Returns(Task.FromResult<Guest?>(null));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.GetGuest(333);
 
             Assert.IsNotNull(res);
             Assert.False(res.Success);
-
             Assert.AreEqual(res.ErrorCode, ErrorCode.GUEST_NOT_FOUND);
             Assert.AreEqual(res.Message, "No guest record was found with the given id");
-
         }
 
         [Test]
         public async Task Should_Return_Guest_Success()
         {
-
             var fakeRepo = new Mock<IGuestRepository>();
 
-            var fakeGuest = new Guest 
-            { 
+            var fakeGuest = new Guest
+            {
                 Id = 333,
                 Name = "Test",
                 DocumentId = new Domain.ValueObjects.PersonId
@@ -217,21 +198,15 @@ namespace ApplicationTest
 
             fakeRepo.Setup(x => x.Get(333)).Returns(Task.FromResult<Guest?>(fakeGuest));
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.GetGuest(333);
 
             Assert.IsNotNull(res);
             Assert.True(res.Success);
-
             Assert.AreEqual(res.Data.Id, fakeGuest.Id);
             Assert.AreEqual(res.Data.Name, fakeGuest.Name);
-
         }
-
-       
-
-
 
         [Test]
         public async Task Should_DeleteGuest_Successfully()
@@ -243,15 +218,14 @@ namespace ApplicationTest
 
             fakeRepo.Setup(x => x.Delete(guestId)).ReturnsAsync(true);
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.DeleteGuest(guestId);
 
             Assert.IsNotNull(res);
-            Assert.True(res.Success); 
+            Assert.True(res.Success);
             Assert.AreEqual("Guest deleted successfully", res.Message);
         }
-
 
         [Test]
         public async Task Should_Return_Failure_When_Guest_Not_Found_For_Delete()
@@ -261,7 +235,7 @@ namespace ApplicationTest
 
             fakeRepo.Setup(x => x.Delete(guestId)).ReturnsAsync(false);
 
-            guestManager = new GuestManager(fakeRepo.Object);
+            guestManager = new GuestManager(fakeRepo.Object, Mock.Of<IBookingRepository>());  
 
             var res = await guestManager.DeleteGuest(guestId);
 
@@ -270,6 +244,35 @@ namespace ApplicationTest
             Assert.AreEqual("No guest record was found with the given id", res.Message);
         }
 
+        [Test]
+        public async Task Should_Return_CannotDeleteGuestWithBookings_When_Guest_Has_Bookings()
+        {
+            // Arrange
+            int guestId = 1;
+            var fakeGuestRepo = new Mock<IGuestRepository>();
+            var fakeBookingRepo = new Mock<IBookingRepository>();
 
+            // Configura o mock para retornar um convidado existente
+            fakeGuestRepo.Setup(x => x.Get(guestId)).ReturnsAsync(new Guest
+            {
+                Id = guestId,
+                Name = "John Doe"
+            });
+
+            // Configura o mock para indicar que o convidado possui reservas
+            fakeBookingRepo.Setup(x => x.HasBookingsForGuest(guestId)).ReturnsAsync(true);
+
+            // Cria a instância do GuestManager com os mocks
+            guestManager = new GuestManager(fakeGuestRepo.Object, fakeBookingRepo.Object);  // Correção: passando o mock correto
+
+            // Act
+            var res = await guestManager.DeleteGuest(guestId);
+
+            // Assert
+            Assert.IsNotNull(res);
+            Assert.False(res.Success);
+            Assert.AreEqual(ErrorCode.CANNOT_DELETE_GUEST_WITH_BOOKINGS, res.ErrorCode);
+            Assert.AreEqual("Cannot delete guest because they have existing bookings.", res.Message);
+        }
     }
 }

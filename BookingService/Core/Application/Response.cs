@@ -17,10 +17,11 @@
         ROOM_IN_MAINTENANCE = 10,
         ROOM_NOT_AVAILABLE = 11,
         CANNOT_DELETE_ROOM_WITH_BOOKINGS = 12,
-        CANNOT_DELETE_GUEST_WITH_BOOKINGS = 13
+        CANNOT_DELETE_GUEST_WITH_BOOKINGS = 13,
 
 
         //Booking
+        BOOKING_NOT_FOUND = 14
 
         //Payment
     }

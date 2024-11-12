@@ -8,6 +8,7 @@ using Application.Room;
 using Application.Booking;
 using Data.Room;
 using Data.Booking;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,28 @@ builder.Services.AddDbContext<HotelDbContext>(
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Hotel Booking API",
+        Version = "v1",
+        Description = "API for managing hotel bookings, guests, and rooms",
+        TermsOfService = new Uri("https://github.com/joyce-santos23"),
+        Contact = new OpenApiContact
+        {
+            Name = "Joyce Santos Mendes",
+            Email = "joycectba@hotmail.com",
+            Url = new Uri("https://github.com/joyce-santos23")
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Termo de Licença de Uso",
+            Url = new Uri("https://github.com/joyce-santos23")
+        }
+    });
+});
+
 
 var app = builder.Build();
 
