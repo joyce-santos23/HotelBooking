@@ -247,28 +247,22 @@ namespace ApplicationTest
         [Test]
         public async Task Should_Return_CannotDeleteGuestWithBookings_When_Guest_Has_Bookings()
         {
-            // Arrange
             int guestId = 1;
             var fakeGuestRepo = new Mock<IGuestRepository>();
             var fakeBookingRepo = new Mock<IBookingRepository>();
 
-            // Configura o mock para retornar um convidado existente
             fakeGuestRepo.Setup(x => x.Get(guestId)).ReturnsAsync(new Guest
             {
                 Id = guestId,
                 Name = "John Doe"
             });
 
-            // Configura o mock para indicar que o convidado possui reservas
             fakeBookingRepo.Setup(x => x.HasBookingsForGuest(guestId)).ReturnsAsync(true);
 
-            // Cria a instância do GuestManager com os mocks
-            guestManager = new GuestManager(fakeGuestRepo.Object, fakeBookingRepo.Object);  // Correção: passando o mock correto
+            guestManager = new GuestManager(fakeGuestRepo.Object, fakeBookingRepo.Object);
 
-            // Act
             var res = await guestManager.DeleteGuest(guestId);
 
-            // Assert
             Assert.IsNotNull(res);
             Assert.False(res.Success);
             Assert.AreEqual(ErrorCode.CANNOT_DELETE_GUEST_WITH_BOOKINGS, res.ErrorCode);

@@ -39,12 +39,10 @@ namespace API.Controllers
 
             return res.ErrorCode switch
             {
-                // Mapear os códigos de erro específicos com suas respectivas mensagens
                 Application.ErrorCode.MISSING_REQUIRED_INFORMATION => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
                 Application.ErrorCode.INVALID_PRICE => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
                 Application.ErrorCode.ROOM_NOT_AVAILABLE => BadRequest(new { Message = res.Message, ErrorCode = res.ErrorCode }),
 
-                // Caso o código de erro seja desconhecido
                 _ => BadRequest(new { Message = "An error occurred while creating the room." })
             };
         }
